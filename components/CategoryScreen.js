@@ -51,7 +51,7 @@ export default class App extends React.Component {
         {this.categoriesList()}
         <Button
           title="Lanjut"
-          onPress={() => this.props.navigation('List')}
+          onPress={() => this.props.navigation.navigate('List')}
         />
       </View>
     )

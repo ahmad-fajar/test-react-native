@@ -6,7 +6,7 @@ import ListScreen from './components/ListScreen'
 
 const App = StackNavigator({
   Category: { screen: CategoryScreen},
-  List: { screen: ListScreen}
+  List: { screen: ListScreen},
 })
 
 export default App
