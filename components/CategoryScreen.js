@@ -3,7 +3,7 @@ import React from 'react'
 
 import { Button, Image, StyleSheet, Text, View } from 'react-native';
 
-export default class App extends React.Component {
+export default class CategoryScreen extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -12,10 +12,14 @@ export default class App extends React.Component {
   }
 
   categoriesList() {
+    const { navigate } = this.props.navigation
     return this.state.categories.map((cat, i) => {
       return (
         <View key={i}>
-          <Text>
+          <Text
+            style={styles.text}
+            onPress={() => navigate('List', {url: cat[1]})}
+          >
             {cat[0]}
           </Text>
         </View>
@@ -27,7 +31,6 @@ export default class App extends React.Component {
     let url = 'http://swapi.co/api'
     axios.get(url)
       .then(({ data }) => {
-        console.log('kampret', data)
         this.setState({
           categories: Object.entries(data)
         })
@@ -36,23 +39,14 @@ export default class App extends React.Component {
   }
 
   render() {
+    const { navigate } = this.props.navigation
     return (
-      <View>
+      <View style={styles.container}>
         <Image
           style={styles.image}
           source={require('../darth-vader.jpg')}
         />
-        <Text>AAA</Text>
-        <Text>BBB</Text>
-        <Text>CCC</Text>
-        <Text>DDD</Text>
-        <Text>EEE</Text>
-        <Text>FFF</Text>
         {this.categoriesList()}
-        <Button
-          title="Lanjut"
-          onPress={() => this.props.navigation.navigate('List')}
-        />
       </View>
     )
   }
@@ -70,4 +64,8 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150
   },
+
+  text: {
+    margin: 20
+  }
 });

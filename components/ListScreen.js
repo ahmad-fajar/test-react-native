@@ -3,7 +3,7 @@ import React from 'react'
 
 import { Image, StyleSheet, Text, View } from 'react-native';
 
-export default class App extends React.Component {
+export default class ListScreen extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -12,11 +12,15 @@ export default class App extends React.Component {
   }
 
   listList() {
+    const { navigate } = this.props.navigation
     return this.state.list.map((li, i) => {
       return (
         <View key={i}>
-          <Text>
-            {li[0]}
+          <Text
+            style={styles.text}
+            onPress={() => navigate('Detail', { url: li.url })}
+          >
+            {li.name}
           </Text>
         </View>
       )
@@ -24,12 +28,19 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    let url = 'http://swapi.co/api/people'
+    let url = this.props.navigation.state.params.url
     axios.get(url)
       .then(({ data }) => {
-        console.log(data)
+        let newList = []
+        data.results.forEach(a => {
+          let info = {
+            name: a.name || a.title,
+            url: a.url
+          }
+          newList.push(info)
+        })
         this.setState({
-          list: Object.entries(data)
+          list: newList
         })
       })
       .catch(e => console.log(e))
@@ -37,7 +48,7 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <Image
           style={styles.image}
           source={require('../darth-vader.jpg')}
@@ -60,4 +71,8 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150
   },
+
+  text: {
+    margin: 20
+  }
 });
